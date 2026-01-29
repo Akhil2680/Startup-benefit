@@ -1,4 +1,4 @@
-const express = require("express"); // 🔴 MISSING BEFORE
+const express = require("express"); //
 const connectDB = require("./config/db");
 const cors = require("cors");
 
@@ -11,6 +11,9 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
 
 // Database connection
 connectDB();

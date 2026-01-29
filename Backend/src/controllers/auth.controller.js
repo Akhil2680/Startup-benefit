@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const generateToken = require("../config/jwt");
+const User = require("../models/User.js");
+const generateToken = require("../config/jwt.js");
 
 const register = async (req, res) => {
   try {
@@ -39,11 +39,6 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
     const token = generateToken(user._id);
 
     return res.status(200).json({
@@ -51,7 +46,6 @@ const login = async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
-        isVerified: user.isVerified,
       },
     });
   } catch (error) {

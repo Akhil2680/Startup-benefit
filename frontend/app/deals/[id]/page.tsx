@@ -49,16 +49,16 @@ export default function DealDetailsPage() {
 
         setClaiming(true);
         try {
-            // Assuming existing backend endpoint for claiming
+           
             await api.post('/claims', { dealId: deal._id });
             setClaimSuccess(true);
             setTimeout(() => {
-                router.push('/dashboard'); // or wherever claims are listed
+                router.push('/dashboard');
             }, 2000);
         } catch (err: any) {
             console.error("Failed to claim deal:", err);
             if (err.response?.status === 401) {
-                // Redirect to login or show auth error
+          
                 alert("You must be logged in to claim this deal.");
             } else {
                 alert("Failed to claim deal. Please try again.");

@@ -13,7 +13,7 @@ interface Deal {
 
 interface Claim {
     _id: string;
-    dealId: Deal | string; // Handle both populated and unpopulated cases safely
+    dealId: Deal | string; 
     status: string;
     createdAt: string;
     claimCode?: string;
@@ -31,7 +31,7 @@ export default function DashboardPage() {
                 setClaims(response.data);
             } catch (err: any) {
                 console.error("Failed to fetch claims:", err);
-                // If 401, maybe redirect to login or show message
+              
                 if (err.response?.status === 401) {
                     setError("Please log in to view your dashboard.");
                 } else {
@@ -82,7 +82,7 @@ export default function DashboardPage() {
                     <div className="bg-white shadow overflow-hidden sm:rounded-md border border-gray-200">
                         <ul className="divide-y divide-gray-200">
                             {claims.map((claim, index) => {
-                                // Handle case where dealId might be populated or just an ID
+                            
                                 const deal = typeof claim.dealId === 'object' ? claim.dealId : { title: 'Unknown Deal', _id: claim.dealId } as Deal;
 
                                 return (
