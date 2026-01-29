@@ -1,6 +1,5 @@
 const User = require("../models/User");
-const generateToken = require("../config/jwt.js");
-
+const generateToken = require("../config/jwt");
 
 const register = async (req, res) => {
   try {
@@ -18,21 +17,21 @@ const register = async (req, res) => {
     const user = new User({ email, password });
     await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    return res.status(201).json({
+      message: "User registered successfully",
+    });
   } catch (error) {
-    console.error("Registration error:", error.message);
-    console.error("Stack trace:", error.stack);
-    res.status(500).json({ message: "Registration failed", error: error.message });
+    console.error("REGISTER ERROR:", error);
+    return res.status(500).json({ message: "Registration failed" });
   }
 };
-
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res.status(400).json({ message: "Email and password required" });
     }
 
     const user = await User.findOne({ email });
@@ -52,15 +51,16 @@ const login = async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
-        isVerified: user.isVerified
-      }
+        isVerified: user.isVerified,
+      },
     });
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
     return res.status(500).json({ message: "Login failed" });
   }
 };
 
 module.exports = {
   register,
-  login
+  login,
 };
