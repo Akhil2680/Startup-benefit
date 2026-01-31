@@ -11,7 +11,7 @@ interface DealDetail {
     description: string;
     category: string;
     partnerName: string;
-    eligibilityCriteria: string;
+    eligibilityText: string;
     isLocked: boolean;
     expiryDate?: string;
     imageUrl?: string;
@@ -45,23 +45,46 @@ export default function DealDetailsPage() {
     }, [id]);
 
     const handleClaim = async () => {
-        if (!deal || deal.isLocked) return;
+        if (!deal) return;
+
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push(`/login?redirect=/deals/${deal._id}`);
+            return;
+        }
+
+        if (deal.isLocked) {
+            const userJson = localStorage.getItem('user');
+            const user = userJson ? JSON.parse(userJson) : null;
+
+            if (!user || !user.isVerified) {
+                alert("This deal is locked. You must be a verified user to claim it.");
+                return;
+            }
+        }
 
         setClaiming(true);
         try {
-           
-            await api.post('/claims', { dealId: deal._id });
+            // Updated to match backend route: POST /api/claims/:dealId
+            await api.post(`/claims/${deal._id}`);
             setClaimSuccess(true);
             setTimeout(() => {
                 router.push('/dashboard');
             }, 2000);
         } catch (err: any) {
             console.error("Failed to claim deal:", err);
+            const errorMessage = err.response?.data?.message || "Failed to claim deal. Please try again.";
+
             if (err.response?.status === 401) {
-          
-                alert("You must be logged in to claim this deal.");
+                alert("Session expired. Please log in again.");
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                router.push('/login');
+            } else if (err.response?.status === 403) {
+                alert(errorMessage);
             } else {
-                alert("Failed to claim deal. Please try again.");
+                alert(errorMessage);
             }
         } finally {
             setClaiming(false);
@@ -143,7 +166,7 @@ export default function DealDetailsPage() {
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 mb-8">
                                 <h3 className="text-lg font-bold text-gray-900 mb-3">Eligibility Criteria</h3>
                                 <p className="text-sm text-gray-600">
-                                    {deal.eligibilityCriteria}
+                                    {deal.eligibilityText || "No specific eligibility criteria."}
                                 </p>
                             </div>
                         </div>

@@ -1,8 +1,8 @@
-🚀 Startup Benefits Platform
+1) Startup Benefits Platform
 
 Full-Stack Developer Assignment
 
-📌 Overview
+=> Overview
 
 The Startup Benefits Platform is a full-stack web application designed to help early-stage startups access exclusive SaaS deals and partnerships.
 
@@ -10,7 +10,7 @@ Many startups cannot afford premium tools during their initial stages. This plat
 
 The focus of this project is clarity of application flow, clean architecture, secure authentication, and thoughtful UI/UX, rather than excessive features.
 
-🧠 Business Context
+=> Business Context
 Target Users
 
 Startup founders
@@ -33,7 +33,7 @@ Public and locked (verification-required) deals
 
 Secure claiming and tracking of benefits
 
-🏗️ Tech Stack
+=> Tech Stack
 Frontend
 
 Next.js (App Router)
@@ -58,7 +58,7 @@ Mongoose
 
 JWT-based authentication
 
-🔁 End-to-End Application Flow
+=> End-to-End Application Flow
 
 User registers and logs in
 
@@ -74,7 +74,7 @@ Backend validates eligibility and verification status
 
 Claimed deals appear in the user dashboard with status tracking
 
-🔐 Authentication & Authorization Strategy
+=> Authentication & Authorization Strategy
 
 Authentication is handled using JWT (JSON Web Tokens)
 
@@ -92,7 +92,7 @@ Backend strictly enforces this rule before creating a claim
 
 This ensures security is handled at the API level, not just in the UI.
 
-🧩 Core Backend Entities
+=> Core Backend Entities
 User
 
 Email
@@ -125,7 +125,7 @@ Timestamp
 
 MongoDB creates databases and collections lazily when the first document is inserted, ensuring clean and efficient storage.
 
-🔄 Claiming a Deal – Internal Flow
+=> Claiming a Deal – Internal Flow
 
 User clicks Claim Deal
 
@@ -145,7 +145,7 @@ Claim appears in the user dashboard
 
 This flow ensures data integrity, security, and clear state tracking.
 
-🎨 Frontend UI & Animation Strategy
+=>Frontend UI & Animation Strategy
 
 The UI follows a modern SaaS design philosophy:
 
@@ -176,8 +176,7 @@ Axios is configured with an interceptor to attach JWT tokens
 Backend responses drive UI state (locked deals, claim status, errors)
 
 This separation ensures scalability and maintainability.
-
-⚠️ Known Limitations
+=> Known Limitations
 
 No email verification flow (mocked via boolean flag)
 
@@ -189,7 +188,7 @@ No deployment included
 
 These were intentionally excluded to prioritize core flow correctness and code clarity.
 
-🚀 Production Improvements
+=>Production Improvements
 
 If extended for production use:
 
@@ -199,21 +198,6 @@ Admin moderation panel
 
 Role-based permissions
 
-Refresh tokens for authentication
-
-Rate limiting and audit logs
-
-Improved accessibility and performance optimization
-
-📊 UI & Performance Considerations
-
-Components are modular and reusable
-
-Animations are lightweight and intentional
-
-API calls are centralized
-
-Layouts are responsive and mobile-friendly
 
 📁 Project Structure
 /backend
@@ -229,13 +213,20 @@ Layouts are responsive and mobile-friendly
   ├── lib
   └── styles
 
-🧪 How to Run Locally
-Backend
-cd backend
-npm install
-npm run dev
+=> How to Run Locally
+## Environment Variables
 
-Frontend
-cd frontend
-npm install
-npm run dev
+Create a `.env` file in the root directory and add:
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+
+=>Backend
+   cd backend
+   npm install
+   node server.js
+=>Frontend
+   cd frontend
+   npm install
+   npm run dev

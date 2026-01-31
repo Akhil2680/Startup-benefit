@@ -33,9 +33,20 @@ export default function DealsPage() {
     const [deals, setDeals] = useState<Deal[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isVerified, setIsVerified] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
+        // Check user verification status
+        const userJson = localStorage.getItem('user');
+        if (userJson) {
+            try {
+                const user = JSON.parse(userJson);
+                setIsVerified(!!user.isVerified);
+            } catch (e) {
+                console.error("Failed to parse user from localStorage", e);
+            }
+        }
         const fetchDeals = async () => {
             try {
                 const response = await api.get('/deals');
@@ -107,7 +118,7 @@ export default function DealsPage() {
                                 <DealCard
                                     title={deal.title}
                                     category={deal.category}
-                                    isLocked={deal.isLocked}
+                                    isLocked={deal.isLocked && !isVerified}
                                     onClick={() => router.push(`/deals/${deal._id}`)}
                                 />
                             </motion.div>

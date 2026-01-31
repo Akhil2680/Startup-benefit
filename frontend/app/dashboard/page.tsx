@@ -13,9 +13,9 @@ interface Deal {
 
 interface Claim {
     _id: string;
-    dealId: Deal | string; 
+    dealId: Deal | string;
     status: string;
-    createdAt: string;
+    claimedAt: string;
     claimCode?: string;
 }
 
@@ -27,11 +27,11 @@ export default function DashboardPage() {
     useEffect(() => {
         const fetchClaims = async () => {
             try {
-                const response = await api.get('/claims');
+                const response = await api.get('/claims/my');
                 setClaims(response.data);
             } catch (err: any) {
                 console.error("Failed to fetch claims:", err);
-              
+
                 if (err.response?.status === 401) {
                     setError("Please log in to view your dashboard.");
                 } else {
@@ -82,7 +82,7 @@ export default function DashboardPage() {
                     <div className="bg-white shadow overflow-hidden sm:rounded-md border border-gray-200">
                         <ul className="divide-y divide-gray-200">
                             {claims.map((claim, index) => {
-                            
+
                                 const deal = typeof claim.dealId === 'object' ? claim.dealId : { title: 'Unknown Deal', _id: claim.dealId } as Deal;
 
                                 return (
@@ -99,7 +99,7 @@ export default function DashboardPage() {
                                                         {deal.title}
                                                     </p>
                                                     <p className="text-xs text-gray-500 mt-1">
-                                                        Claimed on {new Date(claim.createdAt).toLocaleDateString()}
+                                                        Claimed on {claim.claimedAt ? new Date(claim.claimedAt).toLocaleDateString() : 'Unknown date'}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center">
